@@ -59,7 +59,7 @@ app.post('/api/getQuestions', (req, res) => {
             else res.send({'questionList': results});
         });
     } else {
-        database.query("SELECT * FROM Publicquestions", (error, results, fields) => {
+        database.query("SELECT * FROM Publicquestions WHERE questionID = " + body.ID, (error, results, fields) => {
             if(error) res.send({'questionsList': null});
             else res.send({'questionList': results});
         });
