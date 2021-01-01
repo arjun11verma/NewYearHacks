@@ -17,9 +17,15 @@ var rooms = new Map();
 const formatValues = (values) => {
     var returnString = "(";
     for (var i = 0; i < values.length - 1; i++) {
-        returnString += "'" + values[i] + "', ";
+        if(Number.isInteger(values[i])) {
+            returnString += values[i] + ", ";
+        }
+        else {
+            returnString += "'" + values[i].replace("'", " ") + "', ";
+        }
     }
-    return returnString + "'" + values[values.length - 1] + "')";
+    if(Number.isInteger(values[values.length - 1]) || parseInt(values[values.length - 1]) !== null) return returnString + values[values.length - 1] + ")";
+    else return returnString + "'" + values[values.length - 1] + "')";
 }
 
 app.post('/api/loginUser', (req, res) => {
@@ -45,9 +51,12 @@ app.post('/api/createAccount', (req, res) => {
 
 app.post('/api/createQuestion', (req, res) => {
     const body = req.body;
+    console.log("INSERT INTO Userquestions (questionbody, questionanswer, difficulty, username, packetName, category, Publicity) VALUES " + formatValues([body.questionBody, body.answer, body.difficulty, body.username, body.packetName, body.category, body.publicity]));
     database.query("INSERT INTO Userquestions (questionbody, questionanswer, difficulty, username, packetName, category, Publicity) VALUES " + formatValues([body.questionBody, body.answer, body.difficulty, body.username, body.packetName, body.category, body.publicity]), (error, results, fields) => {
-        if(error) res.send({'status': true});
-        else res.send({'status': false});
+        console.log(error, results);
+        
+        if(error) res.send({'status': false});
+        else res.send({'status': true});
     });
 });
 
