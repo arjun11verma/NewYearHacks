@@ -9,30 +9,47 @@ class Bowlpage extends Component {
         super(props);
         this.state = {
             questionText: "",
+            maxQuestions: []
         }
     }
 
     addToQuestion = () => {
-        var questionFromDB, nextWord, count = 0;
-        axios.post(base_url + '/api/getQuestions', {'user': false, questionID: 73}).then((res) => {
-            console.log(res);
-            questionFromDB = res.questionList.questionBody.split(" ");
+        var questionFromDB, nextWord, count = 0, questionNum = this.state.maxQuestions[Math.floor(Math.random() * this.state.maxQuestions.length)];
+        axios.post(base_url + 'getQuestions', {'user': false, 'ID': questionNum}).then((res) => {
+            questionFromDB = res.data.questionList[0].questionbody.split(" ");
             console.log(questionFromDB);
             var questionInterval = setInterval(() => {
                 nextWord = questionFromDB[count];
                 this.setState((prevState) => {
                     return{
-                        questionText: prevState.questionText + nextWord
+                        questionText: prevState.questionText + nextWord + " "
                     }
                 });
                 count++;
-                if(count === questionFromDB.length) clearInterval(questionInterval);
-            }, 500);
+                if(count === questionFromDB.length) {
+                    clearInterval(questionInterval);
+                    this.setState((prevState) => {
+                        return{
+                            maxQuestions: prevState.maxQuestions.splice(questionNum, 1)
+                        }
+                    });
+                }
+            }, 100);
         });
     }
 
+    getRandomNumber = () => {
+
+    }
+
     componentDidMount = () => {
-        this.addToQuestion();
+        var maxQuestions = [];
+        for(var i = 1; i < 100; i++) {maxQuestions.push(i);}
+        this.setState({
+            maxQuestions: maxQuestions
+        }, () => {
+            this.addToQuestion();
+        });
     }
 
     render() {

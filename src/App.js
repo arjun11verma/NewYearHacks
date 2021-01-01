@@ -6,11 +6,13 @@ import Homepage from './Homepage';
 import Loginpage from './Loginpage';
 import Createaccountpage from './Createaccountpage';
 import Questionpage from './Questionpage';
+import Settings from './Settings';
 
 function App() {
   return (
     <BrowserRouter>
       <Switch>
+        <Route path = "/Homepage/:id/Settings" component = {Settings}/>
         <Route path = "/Homepage/:id/Questionpage" component = {Questionpage}/>
         <Route path = "/Homepage/:id/Bowlpage" component = {Bowlpage}/>
         <Route path = "/Homepage/:id" component = {Homepage}/>
