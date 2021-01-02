@@ -1,67 +1,10 @@
-import React, { Component, classes } from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
+import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
-import { fade, makeStyles } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
+import { IconButton, Grid, TextField} from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search'
+import {grey} from '@material-ui/core/colors';
+import AppbarMenu from './AppbarMenu'
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-      flexGrow: 1,
-    },
-    menuButton: {
-      marginRight: theme.spacing(2),
-    },
-    title: {
-      flexGrow: 1,
-      display: 'none',
-      [theme.breakpoints.up('sm')]: {
-        display: 'block',
-      },
-    },
-    search: {
-      position: 'relative',
-      borderRadius: theme.shape.borderRadius,
-      backgroundColor: fade(theme.palette.common.white, 0.15),
-      '&:hover': {
-        backgroundColor: fade(theme.palette.common.white, 0.25),
-      },
-      marginLeft: 0,
-      width: '100%',
-      [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(1),
-        width: 'auto',
-      },
-    },
-    searchIcon: {
-      padding: theme.spacing(0, 2),
-      height: '100%',
-      position: 'absolute',
-      pointerEvents: 'none',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    inputRoot: {
-      color: 'inherit',
-    },
-    inputInput: {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-      transition: theme.transitions.create('width'),
-      width: '100%',
-      [theme.breakpoints.up('sm')]: {
-        width: '12ch',
-        '&:focus': {
-          width: '20ch',
-        },
-      },
-    },
-  }));
 
 class Appbar extends Component {
     constructor(props) {
@@ -72,39 +15,62 @@ class Appbar extends Component {
     }
 
     render() {
+
+      const styles = {
+        searchText: {
+          position: 'absolute', 
+          right: '4%', 
+          top: '5%',
+          transform: 'translate(-50%, -50%)'
+        },
+        paper: {
+          backgroundColor: "grey",
+          height: 60,
+          width: 'auto',
+          margin: 5,
+          display: 'flex',
+          flexWrap: 'wrap',
+        },
+        text: {
+          position: 'absolute', 
+          left: '50%', 
+          top: '5%',
+          transform: 'translate(-50%, -50%)'
+        },
+        searchButton: {
+          position: 'absolute', 
+          right: '5%', 
+          top: '7%',
+          transform: 'translate(-50%, -50%)'
+        },
+        menuButton: {
+          
+        }
+      }
+
+
         return (
-            <div>
-                
-                    <AppBar position="static">
-                        <Toolbar>
-                            <IconButton
-                                edge="start"
-                                className={classes.menuButton}
-                                color="inherit"
-                                aria-label="open drawer"
-                            >
-                                <MenuIcon />
-                            </IconButton>
-                            <Typography className={classes.title} variant="h6" noWrap>
-                                Potatobowl
-                            </Typography>
-                            <div className={classes.search}>
-                                <div className={classes.searchIcon}>
-                                     <SearchIcon />
-                                </div>
-                                <InputBase
-                                    placeholder="Search…"
-                                    classes={{
-                                        root: classes.inputRoot,
-                                        input: classes.inputInput,
-                                    }}
-                                    inputProps={{ 'aria-label': 'search' }}
-                                />
-                            </div>
-                        </Toolbar>
-                    </AppBar>
-                </div>
+          <div> 
+            <Grid style={styles.paper} container spacing={3}> 
+
+              <Grid item xs={11} style={styles.menuButton}>
+                <AppbarMenu/>
+              </Grid>
+
+              <Grid item xs={9} style={styles.text}>
+                <Typography> Welcome to Potato Bowl!!</Typography>
+              </Grid>
+
+              <Grid item xs={1} >
+                <IconButton style={styles.searchButton}>
+                  <SearchIcon />
+                </IconButton>
+                <TextField id="standard-basic" label="search" style={styles.searchText}/>
+              </Grid>
+
+            </Grid>
             
+            </div>
         )
     }
 }
