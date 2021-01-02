@@ -16,8 +16,6 @@ const io = require('socket.io')(server, {
 
 const PORT = 3001;
 
-var rooms = new Map();
-
 const formatValues = (values) => {
     var returnString = "(";
     for (var i = 0; i < values.length - 1; i++) {
@@ -33,6 +31,8 @@ const formatValues = (values) => {
 }
 
 app.post('/api/loginUser', (req, res) => {
+    console.log(req.body);
+
     const username = req.body.username;
     const password = req.body.password;
 
@@ -112,10 +112,17 @@ swap = (arr, i) => {
 
 var questionNums = range(1, 99);
 var qcount = 0;
+var users = new Map();
 
 io.on('connection', (socket) => {
     socket.on('newUser', (data) => {
-        console.log(data.username);
+        if(!users.has(data.username)) users.set(data.username, 0);
+
+        console.log("hello?");
+
+        console.log(Array.from(users.entries()));
+
+        io.emit('youJoined', {'currentUsers': Array.from(users.entries())});
     });
 
     socket.on('newQuestion', (data) => {
@@ -137,6 +144,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('buzzIn', (data) => {
+        if(data.correct) users.set(data.username, users.get(data.username) + 10);
         io.emit('buzzResponse', {'correct': data.correct, 'username': data.username});
     });
 });

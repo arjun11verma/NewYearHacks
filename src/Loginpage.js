@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Grid, Paper, Container, Typography, TextField, Button, Link} from '@material-ui/core';
 import axios from 'axios';
-import base_url from './APIENDPOINT';
+import {base_url} from './APIENDPOINT';
 
 class Loginpage extends Component {
     constructor(props) {

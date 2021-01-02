@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Paper, Container, Typography, TextField, Button} from '@material-ui/core';
 import axios from 'axios';
-import base_url from './APIENDPOINT';
+import {base_url} from './APIENDPOINT';
 
 class Createaccountpage extends Component {
     constructor(props) {
