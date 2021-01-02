@@ -47,7 +47,8 @@ app.post('/api/createAccount', (req, res) => {
     const password = req.body.password;
     const username = req.body.username;
 
-    database.query("INSERT INTO Users (username, password, email) VALUES " + formatValues([username, password, email]), (error, results, fields) => {
+    database.query("INSERT INTO Users (username, password, email) VALUES " + "('" + username + "', '" +  password + "', '" + email + "')", (error, results, fields) => {
+        console.log(error);
         if (error) res.send({ 'status': false });
         else res.send({ 'status': true });
     });
@@ -99,6 +100,13 @@ app.post('/api/getSets', (req, res) => {
         if(error) res.send({'status': false});
         else res.send({'status': true, 'packetList': results});
     });
+});
+
+app.post('/api/getPublicSets', (req, res) => {
+    database.query("SELECT packetName FROM Userquestions WHERE Publicity = 1", (error, results, fields) => {
+        if(error) res.send({'packetList': null});
+        else res.send({'packetList': results});
+    })
 });
 
 range = (min, max) => {

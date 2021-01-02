@@ -5,6 +5,7 @@ import socketIOClient from 'socket.io-client';
 import Appbar from './Appbar';
 import levenshtein from 'js-levenshtein';
 import Scoreboard from './Scoreboard';
+import axios from 'axios';
 
 const url_list = document.location.href.split("/");
 var socket;
@@ -21,7 +22,8 @@ class Bowlpage extends Component {
             activeInterval: null,
             paused: false,
             buzzed: false,
-            currentUsers: []
+            currentUsers: [],
+            userPackets: []
         }
     }
 
@@ -75,7 +77,6 @@ class Bowlpage extends Component {
     }
 
     removeParentheses = (string) => {
-        
         if (string.includes("(")) {
             var startI = 0, pCount = 0, removeSub = []
             for(var i = 0; i < string.length; i++) {
@@ -141,6 +142,7 @@ class Bowlpage extends Component {
         }).filter(function (el) {
             return el !== null
         });
+
         return myAns;
     }
 
@@ -151,12 +153,14 @@ class Bowlpage extends Component {
         var correct = false;
 
         answers.forEach((potentialAnswer) => {
-            if(levenshtein(potentialAnswer, answer) < answer.length/3) {
-                correct = true;
+            if(potentialAnswer.substr(0, 2) === "A:") {
+                if(levenshtein(potentialAnswer.substr(2, potentialAnswer.length).trim(), answer) < answer.length/3) correct = true;
+            } else {
+
             }
         });
 
-        return true;
+        return correct;
     }
 
     componentDidMount = () => {
@@ -195,6 +199,20 @@ class Bowlpage extends Component {
                     paused: false
                 });
             }
+        });
+
+        axios.post(base_url + 'getPublicSets', {'publicity': true}).then((res) => {
+            if(res.data.packetList.length) {
+                var packets = res.data.packetList, addingPackets = [];
+                packets.forEach((packet) => {
+                    if(!addingPackets.includes(packet.packetName)) addingPackets.push(packet.packetName);
+                });
+
+                this.setState({
+                    userPackets: addingPackets.map((packet) => { if(true) return <Paper style = {{margin: 10}}> <Typography style = {{textAlign: "center", fontFamily: "Comic Sans MS"}}>{packet}</Typography> </Paper> })
+                });
+            }
+            console.log(this.state.userPackets);
         });
 
         console.log(socket);
@@ -237,10 +255,12 @@ class Bowlpage extends Component {
                     </Grid>
                     <Grid item xs={5}>
                         <Paper style = {{overflowY: "scroll", height: 340}}>
+                            <Typography variant = "h6" style = {{fontFamily: "Comic Sans MS", textAlign: "center"}}>Current Players</Typography>
                             {this.renderUserList(this.state.currentUsers)}
                         </Paper>
-                        <Paper style = {{height: 340}}>
-
+                        <Paper style = {{overflowY: "scroll", height: 340}}>
+                            <Typography variant = "h6" style = {{fontFamily: "Comic Sans MS", textAlign: "center"}}>Available Sets</Typography>
+                            {this.state.userPackets}
                         </Paper>
                     </Grid>
                 </Grid>
