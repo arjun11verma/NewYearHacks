@@ -33,6 +33,8 @@ const formatValues = (values) => {
 }
 
 app.post('/api/loginUser', (req, res) => {
+    console.log(req.body);
+    
     const username = req.body.username;
     const password = req.body.password;
 
