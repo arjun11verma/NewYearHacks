@@ -34,8 +34,8 @@ class Homepage extends Component {
         return (
             <div>
                 <Appbar/>
-                <h1>Recent sets</h1>
-                <Grid container spacing={3}>
+                <h1 style= {{marginLeft: 300, fontFamily: "Comic Sans MS"}}>Recent Sets</h1>
+                <Grid style = {{marginLeft: 300}} container spacing={3}>
                     
                 <Grid container spacing ={3} direction="row"> 
                         <Grid item xs={3}>

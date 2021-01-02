@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import base_url from './APIENDPOINT';
+import {base_url} from './APIENDPOINT';
 import { Paper, Container, Typography, TextField, Button } from '@material-ui/core';
 
 const url_list = document.location.href.split("/");
@@ -55,8 +55,7 @@ class Questionpage extends Component {
         const packetName = this.state.packet;
 
         axios.post(base_url + 'createQuestion', { 'questionBody': questionBody, 'answer': answer, 'difficulty': difficulty, 'category': category, 'publicity': publicity, 'username': this.state.username, 'packetName': packetName }).then((res) => {
-            if (res.status) console.log("Question Created Successfully");
-            else console.log("Question Not Created. Bummer");
+            if (res.status) {window.location.reload()}
         });
     }
 

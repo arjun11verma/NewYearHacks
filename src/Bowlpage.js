@@ -28,7 +28,7 @@ class Bowlpage extends Component {
 
     renderUserList = (entries) => {
         return entries.map((entry) => {
-            return <Scoreboard username = {entry[0]} score = {entry[1]}></Scoreboard>
+            if(entry[0]) return <Scoreboard username = {entry[0]} score = {entry[1]}></Scoreboard>
         });
     }
 
@@ -172,7 +172,10 @@ class Bowlpage extends Component {
                         </Grid>
                     </Grid>
                     <Grid item xs={4}>
-                        {this.renderUserList(this.state.currentUsers)}
+                        <Paper style = {{overflowY: "scroll", height: 400}}>
+                            {this.renderUserList(this.state.currentUsers)}
+                        </Paper>
+                        
                     </Grid>
                 </Grid>
             </div>

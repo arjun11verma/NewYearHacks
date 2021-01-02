@@ -18,7 +18,7 @@ class Loginpage extends Component {
         const password = document.getElementById('password').value;
 
         axios.post(base_url + 'loginUser', {'username': username, 'password': password}).then((res) => {
-            if(res.data.status) window.location.href = "/Homepage/" + username;
+            if(res.data.status) window.location.href = "/Homepage/" + username + "/";
             else this.setState({failedLogin: true});
         });
     }
