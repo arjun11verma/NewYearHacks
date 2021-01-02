@@ -158,7 +158,7 @@ class Bowlpage extends Component {
 
         answers.forEach((potentialAnswer) => {
             if(potentialAnswer.substr(0, 2) === "A:") {
-                if(levenshtein(potentialAnswer.substr(2, potentialAnswer.length).trim(), answer) < answer.length/3 < 2 ? 2 : answer.length/3) correct = true;
+                if(levenshtein(potentialAnswer.substr(2, potentialAnswer.length).trim(), answer) < (answer.length/3 < 2 ? 2 : answer.length/3)) correct = true;
             } else {
 
             }
@@ -222,7 +222,12 @@ class Bowlpage extends Component {
                 });
                 this.nextQuestion();
             } else {
+                var currentUsers = this.state.currentUsers;
+                currentUsers.forEach((user) => {
+                    if(user[0] === data.username) user[1] -= 5;
+                });
                 this.setState({
+                    currentUsers: currentUsers,
                     paused: false
                 });
             }
