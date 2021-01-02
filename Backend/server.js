@@ -8,7 +8,11 @@ app.use(cors());
 app.use(bodyparser.json());
 
 const server = require('http').createServer(app);
-const io = require('socket.io')(server);
+const io = require('socket.io')(server, {
+    cors: {
+        origin: 'http://localhost:3000'
+    }
+});
 
 const PORT = 3001;
 
@@ -87,17 +91,53 @@ app.get('/api/getNewRooms', (req, res) => {
     res.send({'roomList': rooms.keys});
 });
 
+range = (min, max) => {
+    var a = [];
+    for (var i = min; i <= max; i++) {
+        a.push(i)
+    }
+    for (var j = 0; j < a.length; j++) {
+        a = swap(a, j)
+    }
+    return a;
+}
+
+swap = (arr, i) => {
+    var temp = arr[i];
+    var ri = Math.floor(Math.random() *arr.length);
+    arr[i] = arr[ri];
+    arr[ri] = temp;
+    return arr;
+}
+
+var questionNums = range(1, 99);
+var qcount = 0;
+
 io.on('connection', (socket) => {
     socket.on('newUser', (data) => {
-        if(rooms.has(data.roomName)) rooms.set(data.roomName, rooms.get(data.roomName).push(data.user));
-        else {
-            rooms.set(data.roomName, [data.user]);
-            socket.emit('newRoom', rooms.keys);
+        console.log(data.username);
+    });
+
+    socket.on('newQuestion', (data) => {
+        var questionData;
+        if(data.user) {
+            database.query("SELECT * FROM Userquestions WHERE username IN " + data.userList, (error, results, fields) => {
+                if(!error) questionData = results;
+                
+                io.emit('newQuestion', {'questionList': questionData});
+            });
+        } else {
+            database.query("SELECT * FROM Publicquestions WHERE questionID = " + questionNums[qcount], (error, results, fields) => {
+                if(!error) questionData = results;
+                qcount++;
+
+                io.emit('newQuestion', {'questionList': questionData});
+            });
         }
     });
 
     socket.on('buzzIn', (data) => {
-        
+        io.emit('buzzResponse', {'correct': data.correct, 'username': data.username});
     });
 });
 
