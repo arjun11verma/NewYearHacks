@@ -3,6 +3,7 @@ import { Grid, Paper, Typography, Button, Container, TextField } from '@material
 import axios from 'axios';
 import { base_url, socket_url } from './APIENDPOINT';
 import socketIOClient from 'socket.io-client';
+import Appbar from './Appbar';
 import levenshtein from 'js-levenshtein';
 import Scoreboard from './Scoreboard';
 
@@ -91,7 +92,7 @@ class Bowlpage extends Component {
             }
         });
 
-        return correct;
+        return true;
     }
 
     componentDidMount = () => {
@@ -116,10 +117,13 @@ class Bowlpage extends Component {
 
         socket.on('buzzResponse', (data) => {
             if(data.correct) {
-                this.setState((prevState) => {
-                    return {
-                        currentUsers: prevState.currentUsers.set(data.username, prevState.currentUsers.get(data.username) + 10)
-                    }
+                console.log(data.username);
+                var currentUsers = this.state.currentUsers;
+                currentUsers.forEach((user) => {
+                    if(user[0] === data.username) user[1] += 10;
+                });
+                this.setState({
+                    currentUsers: currentUsers
                 });
                 this.nextQuestion();
             } else {
@@ -149,6 +153,7 @@ class Bowlpage extends Component {
 
         return (
             <div >
+                <Appbar/>
                 <Grid container style={styles.root} >
                     <Grid item xs={8}>
                         <Grid container direction="row">
