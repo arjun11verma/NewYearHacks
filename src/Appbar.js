@@ -3,7 +3,8 @@ import Typography from '@material-ui/core/Typography';
 import { IconButton, Grid, TextField} from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search'
 import {grey} from '@material-ui/core/colors';
-import AppbarMenu from './AppbarMenu'
+import AppbarMenu from './AppbarMenu';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 
 class Appbar extends Component {
@@ -12,6 +13,16 @@ class Appbar extends Component {
         this.state = {
           random: ""
         }
+    }
+
+    searchClick(){
+      console.log('fuck osu, change later')
+      //TO DO
+    }
+
+    accountClick(){
+      console.log("been")
+      //TO DO
     }
 
     render() {
@@ -24,7 +35,7 @@ class Appbar extends Component {
           transform: 'translate(-50%, -50%)'
         },
         paper: {
-          backgroundColor: "grey",
+          backgroundColor: "#94DBFF",
           height: 60,
           width: 'auto',
           margin: 5,
@@ -43,8 +54,11 @@ class Appbar extends Component {
           top: '7%',
           transform: 'translate(-50%, -50%)'
         },
-        menuButton: {
-          
+        accountIcon: {
+          position: 'absolute', 
+          right: '1%', 
+          top: '7%',
+          transform: 'translate(-50%, -50%)'
         }
       }
 
@@ -62,10 +76,16 @@ class Appbar extends Component {
               </Grid>
 
               <Grid item xs={1} >
-                <IconButton style={styles.searchButton}>
+                <IconButton style={styles.searchButton} onClick={this.searchClick}>
                   <SearchIcon />
                 </IconButton>
                 <TextField id="standard-basic" label="search" style={styles.searchText}/>
+              </Grid>
+
+              <Grid item>
+                <IconButton style={styles.accountIcon} onClick={this.accountClick} href="/Homepage/:id/Settings">
+                  <AccountCircleIcon />
+                </IconButton>
               </Grid>
 
             </Grid>
