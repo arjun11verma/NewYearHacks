@@ -117,7 +117,7 @@ export default function AppbarMenu() {
         <List>
           {['Your sets'].map((text, index) => (
             <ListItem button key={text}>
-              <Button component={Link} to ="/Homepage/YourSets">{text}</Button>
+              <Button component={Link} to ="/Homepage/:id/YourSets">{text}</Button>
             </ListItem>
           ))}
         </List>

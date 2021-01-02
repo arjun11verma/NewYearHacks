@@ -3,6 +3,7 @@ import { Grid, Paper, Typography, Button, Container, TextField } from '@material
 import axios from 'axios';
 import { base_url, socket_url } from './APIENDPOINT';
 import socketIOClient from 'socket.io-client';
+import Appbar from './Appbar';
 import levenshtein from 'js-levenshtein';
 import Scoreboard from './Scoreboard';
 
@@ -149,6 +150,7 @@ class Bowlpage extends Component {
 
         return (
             <div >
+                <Appbar/>
                 <Grid container style={styles.root} >
                     <Grid item xs={8}>
                         <Grid container direction="row">
