@@ -43,7 +43,7 @@ class Yoursetspage extends Component {
                         </Typography>
                         <br/>
                         <Container align = "center" style = {{align: "center"}}>
-                            <Paper style = {{overflowY: "scroll", height: "70vh"}}>
+                            <Paper style = {{overflowY: "scroll", height: "60vh"}}>
                                 {this.state.sets}
                             </Paper>
 
