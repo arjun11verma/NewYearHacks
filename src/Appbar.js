@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
-import { IconButton, Grid, TextField} from '@material-ui/core';
+import { IconButton, Grid, TextField, colors} from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search'
 import AppbarMenu from './AppbarMenu';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import Potato from './potato.png';
+import {Link} from 'react-router-dom'
 
+const location = window.location.href.split("/");
+const email = location[location.length - 1];
 
 class Appbar extends Component {
     constructor(props) {
@@ -41,17 +45,22 @@ class Appbar extends Component {
           display: 'flex',
           flexWrap: 'wrap',
         },
-        text: {
+        textButton: {
           position: 'absolute', 
-          left: '50%', 
-          top: '5%',
-          transform: 'translate(-50%, -50%)'
+          left: '10%', 
+          top: '6%',
+          transform: 'translate(-50%, -50%)',
+          backgroundColor: "#240F03",
+          color: "white",
+          fontSize: "100%",
+          fontFamily: "Comic Sans MS"
+          //backgroundImage: "url(./potato.png)",
         },
         searchButton: {
           position: 'absolute', 
           right: '5%', 
           top: '7%',
-          transform: 'translate(-50%, -50%)'
+          transform: 'translate(-50%, -50%)',
         },
         accountIcon: {
           position: 'absolute', 
@@ -70,8 +79,11 @@ class Appbar extends Component {
                 <AppbarMenu/>
               </Grid>
 
-              <Grid item xs={9} style={styles.text}>
-                <Typography> Welcome to Potato Bowl!!</Typography>
+              <Grid item xs={9}>
+                <IconButton component={Link} to={"/Homepage/" + email} style={styles.textButton}>
+                  <Typography style={{fontFamily:"Comic Sans MS", fontSize:18}}> PotatoBowl </Typography>
+                </IconButton>
+                
               </Grid>
 
               <Grid item xs={1} >
