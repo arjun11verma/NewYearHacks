@@ -65,6 +65,12 @@ class Bowlpage extends Component {
         }
     }
 
+    parseAnswer = (answer) => {
+        var d = ";q#;q?x;/;"
+        var accept = answer.replace(";", d).replace("[", d).replace("]", d).replace("or", d).replace("OR", d).replace(",", d).split(d)
+        return accept
+    }
+
     checkAnswer = () => {
         const answer = document.getElementById('answerText').value;
         const answers = this.state.activeQuestion.questionanswer.split(" ");
