@@ -143,7 +143,7 @@ class Bowlpage extends Component {
             },
             papers: {
                 backgroundColor: "whitesmoke",
-                height: 350,
+                height: 500,
                 width: 950,
                 margin: 10,
                 display: 'flex',
@@ -155,10 +155,10 @@ class Bowlpage extends Component {
             <div >
                 <Appbar/>
                 <Grid container style={styles.root} >
-                    <Grid item xs={8}>
+                    <Grid item xs={7}>
                         <Grid container direction="row">
                             <Paper style={styles.papers} elevation={3}>
-                                <Typography>{this.state.questionText}</Typography>
+                                <Typography style = {{margin: 10, fontFamily: "Comic Sans MS"}}>{this.state.questionText}</Typography>
                             </Paper>
                             <Container align="center">
                                 <Button variant="contained" onClick={this.nextQuestion}>Next Question</Button>
@@ -171,11 +171,13 @@ class Bowlpage extends Component {
                             </Container>
                         </Grid>
                     </Grid>
-                    <Grid item xs={4}>
-                        <Paper style = {{overflowY: "scroll", height: 400}}>
+                    <Grid item xs={5}>
+                        <Paper style = {{overflowY: "scroll", height: 340}}>
                             {this.renderUserList(this.state.currentUsers)}
                         </Paper>
-                        
+                        <Paper style = {{height: 340}}>
+
+                        </Paper>
                     </Grid>
                 </Grid>
             </div>

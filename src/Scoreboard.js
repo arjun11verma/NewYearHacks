@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Paper, Typography} from '@material-ui/core';
+import {Paper, Typography, Grid} from '@material-ui/core';
 
 class Scoreboard extends Component {
     constructor(props) {
@@ -12,19 +12,24 @@ class Scoreboard extends Component {
     render() {
         const styles = {
             paper: {
-                height: 60,
                 width: "auto"
             }
         }
 
         return (
             <Paper style = {styles.paper}>
-                <Typography style = {{textAlign: "left"}}>
-                    {this.props.username}
-                </Typography>
-                <Typography style = {{textAlign: "right"}}>
-                    {this.props.score}
-                </Typography>
+                <Grid container direction = "row" alignItems = "center">
+                    <Grid item xs = {11} alignContent = "center">
+                        <Typography style = {{textAlign: "left", fontFamily: "Comic Sans MS"}}>
+                            {this.props.username}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs = {1} alignContent = "center">
+                        <Typography style = {{textAlign: "right", fontFamily: "Comic Sans MS"}}>
+                            {this.props.score}
+                        </Typography>
+                    </Grid>
+                </Grid>
             </Paper>
         )
     }
