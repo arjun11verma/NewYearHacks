@@ -7,6 +7,7 @@ import Loginpage from './Loginpage';
 import Createaccountpage from './Createaccountpage';
 import Questionpage from './Questionpage';
 import Settings from './Settings';
+import Yoursetspage from './Yoursetspage';
 
 function App() {
   return (
@@ -15,9 +16,11 @@ function App() {
         <Route path = "/Homepage/:id/Settings" component = {Settings}/>
         <Route path = "/Homepage/:id/Questionpage" component = {Questionpage}/>
         <Route path = "/Homepage/:id/Bowlpage" component = {Bowlpage}/>
+        <Route path = "/Homepage/:id/YourSets" component = {Yoursetspage}/>
         <Route path = "/Homepage/:id" component = {Homepage}/>
         <Route path = "/CreateAccount" component = {Createaccountpage}/>
         <Route path = "/" component = {Loginpage}/>
+        
       </Switch>
     </BrowserRouter>
   );
