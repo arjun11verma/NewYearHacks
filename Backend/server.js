@@ -151,6 +151,7 @@ io.on('connection', (socket) => {
                 if(!error) questionData = results;
                 console.log(error, results, userQuestionList);
                 io.emit('newQuestion', {'questionList': questionData});
+                userQuestionList.splice(0, 1);
             });
         } else {
             database.query("SELECT * FROM Publicquestions WHERE questionID = " + questionNums[qcount], (error, results, fields) => {
