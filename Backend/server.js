@@ -133,7 +133,7 @@ io.on('connection', (socket) => {
     socket.on('newQuestion', (data) => {
         var questionData;
         if(data.user) {
-            database.query("SELECT * FROM Userquestions WHERE username IN " + data.userList, (error, results, fields) => {
+            database.query("SELECT * FROM Userquestions WHERE username IN " + formatValues(data.userList), (error, results, fields) => {
                 if(!error) questionData = results;
                 
                 io.emit('newQuestion', {'questionList': questionData});
@@ -149,7 +149,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('buzzIn', (data) => {
-        if(data.correct) users.set(data.username, users.get(data.username) + 10);
+        if(data.correct) users.set(data.user, users.get(data.user) + 10);
         io.emit('buzzResponse', {'correct': data.correct, 'username': data.user});
     });
 });
