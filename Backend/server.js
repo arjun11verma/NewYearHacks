@@ -26,7 +26,7 @@ const formatValues = (values) => {
             returnString += "'" + values[i].replace("'", " ") + "', ";
         }
     }
-    if(Number.isInteger(values[values.length - 1]) || parseInt(values[values.length - 1]) !== null) return returnString + values[values.length - 1] + ")";
+    if(Number.isInteger(values[values.length - 1]) && parseInt(values[values.length - 1]) !== null) return returnString + values[values.length - 1] + ")";
     else return returnString + "'" + values[values.length - 1] + "')";
 }
 
@@ -47,7 +47,8 @@ app.post('/api/createAccount', (req, res) => {
     const password = req.body.password;
     const username = req.body.username;
 
-    database.query("INSERT INTO Users (username, password, email) VALUES " + formatValues([username, password, email]), (error, results, fields) => {
+    database.query("INSERT INTO Users (username, password, email) VALUES " + "('" + username + "', '" +  password + "', '" + email + "')", (error, results, fields) => {
+        console.log(error);
         if (error) res.send({ 'status': false });
         else res.send({ 'status': true });
     });
@@ -101,6 +102,13 @@ app.post('/api/getSets', (req, res) => {
     });
 });
 
+app.post('/api/getPublicSets', (req, res) => {
+    database.query("SELECT packetName FROM Userquestions WHERE Publicity = 1", (error, results, fields) => {
+        if(error) res.send({'packetList': null});
+        else res.send({'packetList': results});
+    })
+});
+
 range = (min, max) => {
     var a = [];
     for (var i = min; i <= max; i++) {
@@ -123,6 +131,7 @@ swap = (arr, i) => {
 var questionNums = range(1, 99);
 var qcount = 0;
 var users = new Map();
+var userQuestionList = [];
 
 io.on('connection', (socket) => {
     socket.on('newUser', (data) => {
@@ -130,13 +139,19 @@ io.on('connection', (socket) => {
         io.emit('youJoined', {'currentUsers': Array.from(users.entries())});
     });
 
+    socket.on('userQuestions', (data) => {
+        userQuestionList = (data.userList);
+        console.log(userQuestionList);
+    });
+
     socket.on('newQuestion', (data) => {
         var questionData;
-        if(data.user) {
-            database.query("SELECT * FROM Userquestions WHERE username IN " + formatValues(data.userList), (error, results, fields) => {
+        if(userQuestionList.length) {
+            database.query("SELECT * FROM Userquestions WHERE packetName IN " + formatValues(userQuestionList) + "ORDER BY RAND() LIMIT 1", (error, results, fields) => {
                 if(!error) questionData = results;
-                
+                console.log(error, results, userQuestionList);
                 io.emit('newQuestion', {'questionList': questionData});
+                userQuestionList.splice(0, 1);
             });
         } else {
             database.query("SELECT * FROM Publicquestions WHERE questionID = " + questionNums[qcount], (error, results, fields) => {

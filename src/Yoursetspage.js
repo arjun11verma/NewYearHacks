@@ -21,7 +21,7 @@ class Yoursetspage extends Component {
             console.log(res.data);
             if(res.data.status && res.data.packetList.length) {
                 this.setState({
-                    sets: res.data.packetList.map((packet) => { return <Paper style = {{margin: 10}}> <Typography variant = "h4" style = {{textAlign: "center", fontFamily: "Comic Sans MS"}}>{packet.packetName}</Typography> </Paper> })
+                    sets: res.data.packetList.map((packet) => { if(true) return <Paper style = {{margin: 10}}> <Typography variant = "h4" style = {{textAlign: "center", fontFamily: "Comic Sans MS"}}>{packet.packetName}</Typography> </Paper> })
                 });
             }
         });

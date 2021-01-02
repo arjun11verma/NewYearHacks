@@ -18,6 +18,7 @@ class Createaccountpage extends Component {
         const email = document.getElementById('email').value;
 
         axios.post(base_url + 'createAccount', {'username': username, 'password': password, 'email': email}).then((res) => {
+            console.log(res);
             if(res.data.status) window.location.href = "/";
             else this.setState({failedCreate: true});
         });
