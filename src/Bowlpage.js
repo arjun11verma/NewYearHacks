@@ -172,7 +172,10 @@ class Bowlpage extends Component {
                         </Grid>
                     </Grid>
                     <Grid item xs={4}>
-                        {this.renderUserList(this.state.currentUsers)}
+                        <Paper style = {{overflowY: "scroll", height: 400}}>
+                            {this.renderUserList(this.state.currentUsers)}
+                        </Paper>
+                        
                     </Grid>
                 </Grid>
             </div>

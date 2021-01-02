@@ -21,7 +21,7 @@ class Yoursetspage extends Component {
             console.log(res.data);
             if(res.data.status && res.data.packetList.length) {
                 this.setState({
-                    sets: res.data.packetList.map((packet) => { return <Paper> {packet.packetName} </Paper> })
+                    sets: res.data.packetList.map((packet) => { return <Paper style = {{margin: 10}}> <Typography variant = "h4" style = {{textAlign: "center", fontFamily: "Comic Sans MS"}}>{packet.packetName}</Typography> </Paper> })
                 });
             }
         });
@@ -37,15 +37,20 @@ class Yoursetspage extends Component {
                 <Appbar/>
                 
                 <Container style = {{align: "center"}}>
-                    <Paper>
-                        <Typography style = {{textAlign: "center"}}>
+                    <Paper style = {{height: "90vh"}}>
+                        <Typography variant = "h2" style = {{textAlign: "center", fontFamily: "Comic Sans MS"}}>
                             Welcome to your sets!
                         </Typography>
+                        <br/>
                         <Container align = "center" style = {{align: "center"}}>
-                            {this.state.sets}
+                            <Paper style = {{overflowY: "scroll", height: "70vh"}}>
+                                {this.state.sets}
+                            </Paper>
 
-                            <Button component={Link} to ="./Questionpage" style = {{textAlign: "center"}}>
-                                Add a new question!
+                            <br/>
+
+                            <Button component={Link} to ="./Questionpage" style = {{textAlign: "center", fontFamily: "Comic Sans MS"}}>
+                                Add a new question! 
                             </Button>
                         </Container>
                     </Paper>
