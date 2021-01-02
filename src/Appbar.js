@@ -8,7 +8,7 @@ import Potato from './potato.png';
 import { Link } from 'react-router-dom'
 
 const location = window.location.href.split("/");
-const email = location[location.length - 1];
+const username = location[location.length - 2];
 
 class Appbar extends Component {
   constructor(props) {
@@ -74,7 +74,7 @@ class Appbar extends Component {
             </Grid>
 
             <Grid item>
-              <IconButton component={Link} to={"/Homepage/" + email} style={styles.textButton}>
+              <IconButton component={Link} to={"/Homepage/" + username + "/"} style={styles.textButton}>
                 <Typography style={{ fontFamily: "Comic Sans MS", fontSize: 18 }}> PotatoBowl </Typography>
               </IconButton>
             </Grid>

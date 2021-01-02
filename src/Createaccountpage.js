@@ -30,8 +30,8 @@ class Createaccountpage extends Component {
                 <div>
                     <Container component="main" maxWidth="sm" style={{paddingTop: "11%"}}>
                         <Paper style={{backgroundColor: "white", display: "flex", flexDirection: "column", alignItems: "center"}} elevation={24}>
-                            <Typography style={{paddingTop: "5%", marginBottom: "2%"}} component="h1" variant="h5">
-                                Create a Potatobowl Account
+                            <Typography style={{paddingTop: "5%", marginBottom: "2%", fontFamily:"Comics Sans MS"}} component="h1" variant="h5">
+                                Create a PotatoBowl Account
                             </Typography>
                             <form>
                                 <TextField
