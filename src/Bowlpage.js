@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Paper, Typography, Button, Container, TextField } from '@material-ui/core/';
+import { Grid, Paper, Typography, Button, Container, TextField, CardActionArea } from '@material-ui/core/';
 import { base_url, socket_url } from './APIENDPOINT';
 import socketIOClient from 'socket.io-client';
 import Appbar from './Appbar';
@@ -23,7 +23,8 @@ class Bowlpage extends Component {
             paused: false,
             buzzed: false,
             currentUsers: [],
-            userPackets: []
+            userPackets: [],
+            userPacketNames: []
         }
     }
 
@@ -52,7 +53,7 @@ class Bowlpage extends Component {
                 if (count === questionFromDB.length) {
                     clearInterval(questionInterval);
                 }
-            }, 100);
+            }, 200);
             this.setState({
                 activeInterval: questionInterval
             });
@@ -154,13 +155,17 @@ class Bowlpage extends Component {
 
         answers.forEach((potentialAnswer) => {
             if(potentialAnswer.substr(0, 2) === "A:") {
-                if(levenshtein(potentialAnswer.substr(2, potentialAnswer.length).trim(), answer) < answer.length/3) correct = true;
+                if(levenshtein(potentialAnswer.substr(2, potentialAnswer.length).trim(), answer) < answer.length/3 < 2 ? 2 : answer.length/3) correct = true;
             } else {
 
             }
         });
 
         return correct;
+    }
+
+    queryUserQuestions = () => {
+        socket.emit('userQuestions', {'userList': this.state.userPacketNames});
     }
 
     componentDidMount = () => {
@@ -209,7 +214,8 @@ class Bowlpage extends Component {
                 });
 
                 this.setState({
-                    userPackets: addingPackets.map((packet) => { if(true) return <Paper style = {{margin: 10}}> <Typography style = {{textAlign: "center", fontFamily: "Comic Sans MS"}}>{packet}</Typography> </Paper> })
+                    userPackets: addingPackets.map((packet) => { if(true) return <Paper style = {{margin: 10}}> <CardActionArea onClick = {this.queryUserQuestions}> <Typography style = {{textAlign: "center", fontFamily: "Comic Sans MS"}}>{packet}</Typography> </CardActionArea> </Paper> }),
+                    userPacketNames: addingPackets
                 });
             }
             console.log(this.state.userPackets);
