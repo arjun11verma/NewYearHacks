@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import Appbar from "./Appbar";
+import {Grid, Paper} from '@material-ui/core';
 
 class Homepage extends Component {
     constructor(props) {
@@ -21,9 +23,39 @@ class Homepage extends Component {
     }
 
     render() {
+        const styles = {
+            paper: {
+                width: 250,
+                height: 150,
+                margin: 5,
+                backgroundColor: "#FFC9C9",
+            }
+        }
         return (
             <div>
-                
+                <Appbar/>
+                <h1>Recent sets</h1>
+                <Grid container spacing={3}>
+                    
+                <Grid container spacing ={3} direction="row"> 
+                        <Grid item xs={3}>
+                            <Paper elevation={3} style={styles.paper}/>
+                        </Grid>
+
+                        <Grid item xs={3}>
+                            <Paper elevation={3} style={styles.paper}/>
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={3} direction="row"> 
+                        <Grid item xs={3}>
+                            <Paper elevation={3} style={styles.paper}/>
+                        </Grid>
+
+                        <Grid item xs={3}>
+                            <Paper elevation={3} style={styles.paper}/>
+                        </Grid>
+                    </Grid>
+                </Grid>
             </div>
         )
     }

@@ -3,6 +3,8 @@ import { Grid, Paper, Typography, Button, Container, TextField } from '@material
 import axios from 'axios';
 import { base_url, socket_url } from './APIENDPOINT';
 import socketIOClient from 'socket.io-client';
+import levenshtein from 'js-levenshtein';
+import Scoreboard from './Scoreboard';
 
 const url_list = document.location.href.split("/");
 var socket;
@@ -18,8 +20,15 @@ class Bowlpage extends Component {
             username: url_list[url_list.length - 2],
             activeInterval: null,
             paused: false,
-            buzzed: false
+            buzzed: false,
+            currentUsers: []
         }
+    }
+
+    renderUserList = (entries) => {
+        return entries.map((entry) => {
+            return <Scoreboard username = {entry[0]} score = {entry[1]}></Scoreboard>
+        });
     }
 
     addToQuestion = (data) => {
@@ -65,18 +74,36 @@ class Bowlpage extends Component {
         }
     }
 
+    parseAnswer = (answer) => {
+        const d = "arjunvermaarjun";
+        const accept = answer.replace(";", d).replace("[", d).replace("]", d).replace("or", d).replace("OR", d).replace(",", d).split(d);
+        return accept
+    }
+
     checkAnswer = () => {
         const answer = document.getElementById('answerText').value;
-        const answers = this.state.activeQuestion.questionanswer.split(" ");
+        const answers = this.parseAnswer(this.state.activeQuestion.questionanswer);
+        var correct = false;
 
-        console.log(answer, answers);
+        answers.forEach((potentialAnswer) => {
+            if(levenshtein(potentialAnswer, answer) < answer.length/3) {
+                correct = true;
+            }
+        });
 
-        return answers.includes(answer);
+        return correct;
     }
 
     componentDidMount = () => {
         socket = socketIOClient(socket_url);
-        socket.emit('newUser', {username: this.state.username})
+        socket.emit('newUser', {username: this.state.username});
+
+        socket.on('youJoined', (data) => {
+            console.log(data);
+            this.setState({
+                currentUsers: data.currentUsers
+            });
+        });
 
         socket.on('newQuestion', (data) => {
             this.setState({
@@ -89,7 +116,11 @@ class Bowlpage extends Component {
 
         socket.on('buzzResponse', (data) => {
             if(data.correct) {
-                console.log(data.username + " buzzed in correctly!"); // add a scoreboard feature 
+                this.setState((prevState) => {
+                    return {
+                        currentUsers: prevState.currentUsers.set(data.username, prevState.currentUsers.get(data.username) + 10)
+                    }
+                });
                 this.nextQuestion();
             } else {
                 this.setState({
@@ -136,12 +167,8 @@ class Bowlpage extends Component {
                         </Grid>
                     </Grid>
                     <Grid item xs={4}>
-                        <h1> hi right side</h1>
+                        {this.renderUserList(this.state.currentUsers)}
                     </Grid>
-                    <Grid item xs={1}>
-
-                    </Grid>
-
                 </Grid>
             </div>
         )
