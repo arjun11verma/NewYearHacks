@@ -165,6 +165,7 @@ io.on('connection', (socket) => {
 
     socket.on('buzzIn', (data) => {
         if(data.correct) users.set(data.user, users.get(data.user) + 10);
+        else users.set(data.user, users.get(data.user) - 5);
         io.emit('buzzResponse', {'correct': data.correct, 'username': data.user});
     });
 });
