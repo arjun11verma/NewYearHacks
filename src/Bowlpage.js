@@ -24,7 +24,9 @@ class Bowlpage extends Component {
             buzzed: false,
             currentUsers: [],
             userPackets: [],
-            userPacketNames: []
+            showedAnswer: "Answer:",
+            showedPrompt: "",
+            userPacketNames: [],
         }
     }
 
@@ -62,7 +64,9 @@ class Bowlpage extends Component {
 
     nextQuestion = () => {
         this.setState({
-            questionText: ""
+            questionText: "",
+            showedAnswer: "Answer: ",
+            showedPrompt: "",
         }, () => {
             socket.emit('newQuestion', {'user': false});
         });
@@ -101,7 +105,6 @@ class Bowlpage extends Component {
     }
 
     parseAnswer = (answer) => {
-        console.log(answer)
         
         var setting = "A: "
         var d = "QQQQQQQQ"
@@ -166,6 +169,25 @@ class Bowlpage extends Component {
 
     queryUserQuestions = () => {
         socket.emit('userQuestions', {'userList': this.state.userPacketNames});
+    }
+
+    showAnswer = () => {
+        var ansStr = "Answer: " + this.parseAnswer(this.state.activeQuestion.questionanswer).map((e) => {
+            if (e.match(/^P/)) {
+                return ""
+            }
+            return " " + e;
+        });
+        var proStr = "Prompt: " + this.parseAnswer(this.state.activeQuestion.questionanswer).map((e) => {
+            if (e.match(/^P/)) {
+                return " " + e
+            }
+            return ""
+        });
+        this.setState({
+            showedAnswer: ansStr,
+            showedPrompt: proStr
+        })
     }
 
     componentDidMount = () => {
@@ -246,11 +268,21 @@ class Bowlpage extends Component {
                     <Grid item xs={7}>
                         <Grid container direction="row">
                             <Paper style={styles.papers} elevation={3}>
-                                <Typography style = {{margin: 10, fontFamily: "Comic Sans MS"}}>{this.state.questionText}</Typography>
+                                <Typography style = {{margin: 10, fontFamily: "Comic Sans MS"}}>
+                                    {this.state.questionText}
+                                </Typography>
+                            </Paper>
+                            <Paper style={{width:835, height:80, marginLeft:10, marginBottom:30, backgroundColor: "whitesmoke"}}>
+                                <Typography style={{margin: 10, fontFamily: "Comic Sans MS", textAlign: "center"}}>
+                                    {this.state.showedAnswer}
+                                    <br/>
+                                    {this.state.showedPrompt}
+                                </Typography>
                             </Paper>
                             <Container align="center">
                                 <Button variant="contained" onClick={this.nextQuestion}>Next Question</Button>
                                 <Button variant="contained" onClick={this.buzzIn}>Submit Answer</Button>
+                                <Button variant="contained" onClick={this.showAnswer}>Show Answer</Button>
                             </Container>
                             <Container align="center">
                                 <Grid item xs={4}>
