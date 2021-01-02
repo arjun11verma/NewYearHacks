@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { IconButton, Grid, TextField} from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search'
-import {grey} from '@material-ui/core/colors';
 import AppbarMenu from './AppbarMenu';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 

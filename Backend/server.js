@@ -91,6 +91,16 @@ app.get('/api/getNewRooms', (req, res) => {
     res.send({'roomList': rooms.keys});
 });
 
+app.post('/api/getSets', (req, res) => {
+    const body = req.body;
+
+    database.query("SELECT packetName FROM Userquestions WHERE username = '" + body.username + "'", (error, results, fields) => {
+        console.log(results);
+        if(error) res.send({'status': false});
+        else res.send({'status': true, 'packetList': results});
+    });
+});
+
 range = (min, max) => {
     var a = [];
     for (var i = min; i <= max; i++) {
