@@ -117,11 +117,6 @@ var users = new Map();
 io.on('connection', (socket) => {
     socket.on('newUser', (data) => {
         if(!users.has(data.username)) users.set(data.username, 0);
-
-        console.log("hello?");
-
-        console.log(Array.from(users.entries()));
-
         io.emit('youJoined', {'currentUsers': Array.from(users.entries())});
     });
 
@@ -145,7 +140,7 @@ io.on('connection', (socket) => {
 
     socket.on('buzzIn', (data) => {
         if(data.correct) users.set(data.username, users.get(data.username) + 10);
-        io.emit('buzzResponse', {'correct': data.correct, 'username': data.username});
+        io.emit('buzzResponse', {'correct': data.correct, 'username': data.user});
     });
 });
 

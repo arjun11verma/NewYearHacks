@@ -92,7 +92,7 @@ class Bowlpage extends Component {
             }
         });
 
-        return correct;
+        return true;
     }
 
     componentDidMount = () => {
@@ -117,10 +117,13 @@ class Bowlpage extends Component {
 
         socket.on('buzzResponse', (data) => {
             if(data.correct) {
-                this.setState((prevState) => {
-                    return {
-                        currentUsers: prevState.currentUsers.set(data.username, prevState.currentUsers.get(data.username) + 10)
-                    }
+                console.log(data.username);
+                var currentUsers = this.state.currentUsers;
+                currentUsers.forEach((user) => {
+                    if(user[0] === data.username) user[1] += 10;
+                });
+                this.setState({
+                    currentUsers: currentUsers
                 });
                 this.nextQuestion();
             } else {
