@@ -21,10 +21,14 @@ class Homepage extends Component {
                 username: url_list[url_list.length - 2]
             }, () => {
                 axios.post(base_url + 'getSets', {'username': this.state.username}).then((res) => {
-                    console.log(res.data.packetList);
+                    var packets = res.data.packetList, addingPackets = [];
+                    packets.forEach((packet) => {
+                        if(!addingPackets.includes(packet.packetName)) addingPackets.push(packet.packetName);
+                    });
+
                     if(res.data.status && res.data.packetList.length) {
                         this.setState({
-                            sets: res.data.packetList.map((packet) => {return packet.packetName})
+                            sets: addingPackets
                         });
                     }
                     console.log(this.state.sets);

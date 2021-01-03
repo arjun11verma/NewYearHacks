@@ -14,7 +14,7 @@ const io = require('socket.io')(server, {
     }
 });
 
-const PORT = 3001;
+const PORT = 8080;
 
 const formatValues = (values) => {
     var returnString = "(";

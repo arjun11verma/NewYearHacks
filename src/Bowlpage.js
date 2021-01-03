@@ -268,7 +268,6 @@ class Bowlpage extends Component {
 
         return (
             <div >
-                <Appbar/>
                 <Grid container style={styles.root} >
                     <Grid item xs={7}>
                         <Grid container direction="row">
