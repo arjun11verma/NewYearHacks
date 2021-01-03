@@ -6,6 +6,7 @@ import AppbarMenu from './AppbarMenu';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Potato from './potato.png';
 import { Link } from 'react-router-dom'
+import Settings from './Settings'
 
 const location = window.location.href.split("/");
 const username = location[location.length - 2];
@@ -80,9 +81,7 @@ class Appbar extends Component {
             </Grid>
 
             <Grid item>
-              <IconButton style={{fontSize: 50}} onClick={this.accountClick} href="/Homepage/:id/Settings">
-                <AccountCircleIcon />
-              </IconButton>
+              <Settings/>
             </Grid>
           </Grid>
         </AppBar>
