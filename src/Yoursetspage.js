@@ -20,8 +20,13 @@ class Yoursetspage extends Component {
         axios.post(base_url + 'getSets', {'username': this.state.username}).then((res) => {
             console.log(res.data);
             if(res.data.status && res.data.packetList.length) {
+                var packets = res.data.packetList, addingPackets = [];
+                packets.forEach((packet) => {
+                    if(!addingPackets.includes(packet.packetName)) addingPackets.push(packet.packetName);
+                });
+
                 this.setState({
-                    sets: res.data.packetList.map((packet) => { if(true) return <Paper style = {{margin: 10}}> <Typography variant = "h4" style = {{textAlign: "center", fontFamily: "Comic Sans MS"}}>{packet.packetName}</Typography> </Paper> })
+                    sets: addingPackets.map((packet) => { if(true) return <Paper style = {{margin: 10}}> <Typography variant = "h4" style = {{textAlign: "center", fontFamily: "Comic Sans MS"}}>{packet}</Typography> </Paper> })
                 });
             }
         });

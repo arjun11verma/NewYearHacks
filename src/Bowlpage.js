@@ -55,7 +55,7 @@ class Bowlpage extends Component {
                 if (count === questionFromDB.length) {
                     clearInterval(questionInterval);
                 }
-            }, 200);
+            }, 120);
             this.setState({
                 activeInterval: questionInterval
             });

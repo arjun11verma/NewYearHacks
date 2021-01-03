@@ -26,8 +26,11 @@ const formatValues = (values) => {
             returnString += "'" + values[i].replace("'", " ") + "', ";
         }
     }
-    if(Number.isInteger(values[values.length - 1]) && parseInt(values[values.length - 1]) !== null) return returnString + values[values.length - 1] + ")";
-    else return returnString + "'" + values[values.length - 1] + "')";
+    if(!Number.isNaN(parseInt(values[values.length - 1]))) return returnString + parseInt(values[values.length - 1]) + ")";
+    else {
+        console.log(returnString + "'" + values[values.length - 1] + "')");
+        return returnString + "'" + values[values.length - 1] + "')";
+    }
 }
 
 app.post('/api/loginUser', (req, res) => {
@@ -37,6 +40,7 @@ app.post('/api/loginUser', (req, res) => {
     const password = req.body.password;
 
     database.query("SELECT * FROM Users WHERE username = '" + username + "' AND password = '" + password + "'", (error, results, fields) => {
+        console.log(results);
         if (error) res.send({ 'status': false });
         else res.send({ 'status': results.length });
     });
@@ -147,7 +151,7 @@ io.on('connection', (socket) => {
     socket.on('newQuestion', (data) => {
         var questionData;
         if(userQuestionList.length) {
-            database.query("SELECT * FROM Userquestions WHERE packetName IN " + formatValues(userQuestionList) + "ORDER BY RAND() LIMIT 1", (error, results, fields) => {
+            database.query("SELECT * FROM Userquestions WHERE packetName IN " + formatValues(userQuestionList) + " ORDER BY RAND() LIMIT 1", (error, results, fields) => {
                 if(!error) questionData = results;
                 console.log(error, results, userQuestionList);
                 io.emit('newQuestion', {'questionList': questionData});
